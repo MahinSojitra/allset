@@ -1,0 +1,36 @@
+<div class="container mt-5 mb-5">
+  <div class="row g-4">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div class="card border-2 border-success border-opacity-50 mt-5">
+        <div class="card-body">
+          <h2 class="card-title text-success text-center mb-1">Make today productive</h2>
+          <h6 class="card-subtitle text-center mb-4 text-muted">What’s on Your Mind? Let’s Add it as a Todo!</h6>
+          <form (ngSubmit)="onSubmit()">
+            <div class="mb-4">
+              <input [(ngModel)]="todoTitle" name="todoTitle" type="text" class="form-control border-1 border-success"
+                id="todoTitle" placeholder="Todo's Title" required autofocus>
+              <div id="emailHelp" class="form-text">Title should be between 5 to 10 words long.</div>
+            </div>
+
+            <div class="mb-5">
+              <textarea [(ngModel)]="todoDescription" name="todoDescription"
+                class="form-control border-1 border-success" id="todoDescription" rows="3"
+                placeholder="Write a few words describing your todo..." required></textarea>
+              <div id="emailHelp" class="form-text">Description should between 20 to 100 words long.</div>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 fw-bold">Let’s Get Going</button>
+          </form>
+
+          <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center mt-3" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <div>
+              {{ successMessage }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+  </div>

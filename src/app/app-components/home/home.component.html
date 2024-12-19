@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="container">
+    <h1 class="my-4 display-5 text-success">
+      <span>{{ typedText }}</span><span class="cursor">|</span>
+    </h1>
+    <hr class="border border-success border-2">
+    <div class="row g-4 mb-4">
+      <ng-container *ngFor="let todo of todos">
+        <div class="col-md-4" *ngIf="todo.active">
+          <a class="card-link">
+            <div class="card shadow-sm hover-card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="card-title">
+                    <label *ngIf="currentEditTodo?.id === todo.id" class="form-label fw-bold fs-6"
+                      for="todoTitle">Title</label>
+                    <input *ngIf="currentEditTodo?.id === todo.id" [(ngModel)]="currentEditTodo.title"
+                      class="form-control" title="todoTitle" placeholder="Todo's Title" />
+                    <span *ngIf="currentEditTodo?.id !== todo.id">{{ todo.title }}</span>
+                  </h5>
+                </div>
+                <p class="card-text">
+                  <label *ngIf="currentEditTodo?.id === todo.id" class="form-label fw-bold fs-6"
+                    for="todoDescription">Description</label>
+                  <textarea *ngIf="currentEditTodo?.id === todo.id" [(ngModel)]="currentEditTodo.description"
+                    class="form-control" title="todoDescription"
+                    placeholder="Write a few words describing your todo..."></textarea>
+                  <span *ngIf="currentEditTodo?.id !== todo.id">{{ todo.description }}</span>
+                </p>
+                <div>
+                  <button class="btn btn-sm btn-light me-2" title="Edit" (click)="toggleEdit(todo)">
+                    <i class="bi bi-pencil-fill icon-size fw-bold text-primary"></i>
+                  </button>
+                  <button class="btn btn-sm btn-light me-2" title="Delete" (click)="deleteTodo(todo)">
+                    <i class="bi bi-trash-fill icon-size fw-bold text-danger"></i>
+                  </button>
+                  <button class="btn btn-sm btn-light me-2" title="Complete" (click)="markAsCompleted(todo)">
+                    <i class="bi bi-check2-circle icon-size fw-bold text-success"></i>
+                  </button>
+                  <button *ngIf="currentEditTodo?.id === todo.id" class="btn btn-sm btn-light" title="Save"
+                    (click)="saveTodo()">
+                    <i class="bi bi-save icon-size fw-bold text-success"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </ng-container>
+    </div>
+
+  </div>
+</div>
