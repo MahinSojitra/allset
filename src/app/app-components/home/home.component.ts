@@ -18,16 +18,7 @@ export class HomeComponent implements OnInit {
   deletedTodo: any = null;
   currentEditTodo: any = null;
 
-  constructor(private snackBar: MatSnackBar) {
-    this.todos = [
-      {
-        "id": 1,
-        "title": "Explore the 'AllSet'",
-        "description": "Dive into your new productivity companion! Add your first task, complete it, and feel the joy of progress. Let’s make things happen!",
-        "active": true
-      }
-    ]
-  }
+  constructor(private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.startTyping();
@@ -35,6 +26,16 @@ export class HomeComponent implements OnInit {
       const storedTodos = localStorage.getItem('todos');
       if (storedTodos) {
         this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+        if (this.todos.length === 0) {
+          this.todos = [
+            {
+              "id": 1,
+              "title": "Explore the 'AllSet'",
+              "description": "Dive into your new productivity companion! Add your first task, complete it, and feel the joy of progress. Let’s make things happen!",
+              "active": true
+            }
+          ]
+        }
       }
     }
   }
