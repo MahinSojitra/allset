@@ -27,20 +27,25 @@
                     placeholder="Write a few words describing your todo..."></textarea>
                   <span *ngIf="currentEditTodo?.id !== todo.id">{{ todo.description }}</span>
                 </p>
-                <div>
-                  <button class="btn btn-sm btn-light me-2" title="Edit" (click)="toggleEdit(todo)">
-                    <i class="bi bi-pencil-fill icon-size fw-bold text-primary"></i>
-                  </button>
-                  <button class="btn btn-sm btn-light me-2" title="Delete" (click)="deleteTodo(todo)">
-                    <i class="bi bi-trash-fill icon-size fw-bold text-danger"></i>
-                  </button>
-                  <button class="btn btn-sm btn-light me-2" title="Complete" (click)="markAsCompleted(todo)">
-                    <i class="bi bi-check2-circle icon-size fw-bold text-success"></i>
-                  </button>
-                  <button *ngIf="currentEditTodo?.id === todo.id" class="btn btn-sm btn-light" title="Save"
-                    (click)="saveTodo()">
-                    <i class="bi bi-save icon-size fw-bold text-success"></i>
-                  </button>
+                <div class="d-flex justify-content-between">
+                  <div class="d-flex">
+                    <button class="btn btn-sm btn-light me-2" title="Edit" (click)="toggleEdit(todo)">
+                      <i class="bi bi-pencil-fill icon-size fw-bold text-primary"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light me-2" title="Delete" (click)="deleteTodo(todo)">
+                      <i class="bi bi-trash-fill icon-size fw-bold text-danger"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light me-2" title="Complete" (click)="markAsCompleted(todo)">
+                      <i class="bi bi-check2-circle icon-size fw-bold text-success"></i>
+                    </button>
+                    <button *ngIf="currentEditTodo?.id === todo.id" class="btn btn-sm btn-light" title="Save"
+                      (click)="saveTodo()">
+                      <i class="bi bi-save icon-size fw-bold text-success"></i>
+                    </button>
+                  </div>
+                  <div *ngIf="!(currentEditTodo?.id === todo.id)" class="d-flex align-items-end justify-content-end">
+                    <p class="badge text-bg-success mb-0">{{ todo.updated_at | timeAgo }}</p>
+                  </div>
                 </div>
               </div>
             </div>

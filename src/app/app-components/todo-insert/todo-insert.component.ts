@@ -27,6 +27,8 @@ export class TodoInsertComponent {
         title: this.todoTitle,
         description: this.todoDescription,
         active: true,
+        created_at: new Date(),
+        updated_at: new Date()
       };
 
       let todos = JSON.parse(localStorage.getItem('todos') || '[]');

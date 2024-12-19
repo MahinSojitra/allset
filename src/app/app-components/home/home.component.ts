@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Todo } from '../../Todo';
 import { FormsModule } from '@angular/forms';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TimeAgoPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -18,7 +19,9 @@ export class HomeComponent implements OnInit {
   deletedTodo: any = null;
   currentEditTodo: any = null;
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar) {
+
+  }
 
   ngOnInit(): void {
     this.startTyping();
@@ -26,16 +29,18 @@ export class HomeComponent implements OnInit {
       const storedTodos = localStorage.getItem('todos');
       if (storedTodos) {
         this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
-        if (this.todos.length === 0) {
-          this.todos = [
-            {
-              "id": 1,
-              "title": "Explore the 'AllSet'",
-              "description": "Dive into your new productivity companion! Add your first task, complete it, and feel the joy of progress. Let’s make things happen!",
-              "active": true
-            }
-          ]
-        }
+      } else {
+        this.todos = [
+          {
+            "id": 1,
+            "title": "Explore the 'AllSet'",
+            "description": "Dive into your new productivity companion! Add your first task, complete it, and feel the joy of progress. Let’s make things happen!",
+            "active": true,
+            "created_at": new Date(),
+            "updated_at": new Date()
+          }
+        ]
+        this.saveTodosToLocalStorage();
       }
     }
   }
@@ -59,7 +64,10 @@ export class HomeComponent implements OnInit {
   saveTodo(): void {
     const index = this.todos.findIndex(todo => todo.id === this.currentEditTodo.id);
     if (index !== -1) {
-      this.todos[index] = { ...this.currentEditTodo };
+      this.todos[index] = {
+        ...this.currentEditTodo,
+        updated_at: new Date()
+      };
       this.currentEditTodo = null;
       this.saveTodosToLocalStorage();
     }
@@ -112,5 +120,4 @@ export class HomeComponent implements OnInit {
       localStorage.setItem('todos', JSON.stringify(this.todos));
     }
   }
-
 }
