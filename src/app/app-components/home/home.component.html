@@ -4,6 +4,10 @@
       <span>{{ typedText }}</span><span class="cursor">|</span>
     </h1>
     <hr class="border border-success border-2">
+    <div class="alert">
+      Your to-do list is stored right on your device for easy access. Just remember not to clear your browser data, or
+      it might disappear!
+    </div>
     <div class="row g-4 mb-4">
       <ng-container *ngFor="let todo of todos">
         <div class="col-md-4" *ngIf="todo.active">
@@ -23,24 +27,33 @@
                   <label *ngIf="currentEditTodo?.id === todo.id" class="form-label fw-bold fs-6"
                     for="todoDescription">Description</label>
                   <textarea *ngIf="currentEditTodo?.id === todo.id" [(ngModel)]="currentEditTodo.description"
-                    class="form-control" title="todoDescription"
+                    class="form-control" title="todoDescription" rows="4"
                     placeholder="Write a few words describing your todo..."></textarea>
                   <span *ngIf="currentEditTodo?.id !== todo.id">{{ todo.description }}</span>
                 </p>
                 <div class="d-flex justify-content-between">
                   <div class="d-flex">
-                    <button class="btn btn-sm btn-light me-2" title="Edit" (click)="toggleEdit(todo)">
-                      <i class="bi bi-pencil-fill icon-size fw-bold text-primary"></i>
+                    <button *ngIf="todo.id !== 1" class="btn btn-sm btn-light me-2"
+                      [title]="currentEditTodo?.id === todo.id ? 'Cancel' : 'Edit Todo'" (click)="toggleEdit(todo)">
+                      <i
+                        [class]="currentEditTodo?.id === todo.id ? 'bi bi-x-octagon icon-size fw-bold text-danger' : 'bi bi-pencil-fill icon-size fw-bold purple-color'">
+                      </i>
                     </button>
-                    <button class="btn btn-sm btn-light me-2" title="Delete" (click)="deleteTodo(todo)">
+                    <button *ngIf="todo.id !== 1" class="btn btn-sm btn-light me-2" title="Delete Todo"
+                      (click)="deleteTodo(todo)">
                       <i class="bi bi-trash-fill icon-size fw-bold text-danger"></i>
                     </button>
-                    <button class="btn btn-sm btn-light me-2" title="Complete" (click)="markAsCompleted(todo)">
+                    <button *ngIf="todo.id !== 1" class="btn btn-sm btn-light me-2" title="Mark As Complete"
+                      (click)="markAsCompleted(todo)">
                       <i class="bi bi-check2-circle icon-size fw-bold text-success"></i>
                     </button>
-                    <button *ngIf="currentEditTodo?.id === todo.id" class="btn btn-sm btn-light" title="Save"
-                      (click)="saveTodo()">
-                      <i class="bi bi-save icon-size fw-bold text-success"></i>
+                    <button *ngIf="todo.id === 1" class="btn btn-sm btn-light me-2" title="Got it"
+                      (click)="markAsCompleted(todo)">
+                      <i class="bi bi-check-circle-fill icon-size fw-bold text-success"></i>
+                    </button>
+                    <button *ngIf="currentEditTodo?.id === todo.id" [disabled]="!isTodoModified()"
+                      class="btn btn-sm btn-light" title="Save Todo" (click)="saveTodo()">
+                      <i class="bi bi-floppy icon-size fw-bold text-success"></i>
                     </button>
                   </div>
                   <div *ngIf="!(currentEditTodo?.id === todo.id)" class="d-flex align-items-end justify-content-end">

@@ -45,3 +45,25 @@
 .div-hight-100 {
   height: 100%;
 }
+
+.purple-color {
+  color: purple;
+}
+
+.alert {
+  padding: 10px 10px 10px 25px;
+  border-radius: 0;
+  background-color: #ECFFDC;
+  color: #8a6d3b;
+  position: relative;
+}
+
+.alert::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background-color: #8a6d3b;
+}

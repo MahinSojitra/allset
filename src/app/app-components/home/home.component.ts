@@ -20,7 +20,6 @@ export class HomeComponent implements OnInit {
   currentEditTodo: any = null;
 
   constructor(private snackBar: MatSnackBar) {
-
   }
 
   ngOnInit(): void {
@@ -54,7 +53,7 @@ export class HomeComponent implements OnInit {
   }
 
   toggleEdit(todo: any): void {
-    if (this.currentEditTodo === todo) {
+    if (this.currentEditTodo?.id === todo.id) {
       this.currentEditTodo = null;
     } else {
       this.currentEditTodo = { ...todo };
@@ -71,6 +70,18 @@ export class HomeComponent implements OnInit {
       this.currentEditTodo = null;
       this.saveTodosToLocalStorage();
     }
+  }
+
+  isTodoModified(): boolean {
+    if (!this.currentEditTodo) return false;
+
+    const originalTodo = this.todos.find(todo => todo.id === this.currentEditTodo.id);
+    if (!originalTodo) return false;
+
+    return (
+      originalTodo.title !== this.currentEditTodo.title ||
+      originalTodo.description !== this.currentEditTodo.description
+    );
   }
 
   markAsCompleted(todo: any): void {
