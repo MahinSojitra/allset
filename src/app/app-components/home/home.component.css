@@ -67,3 +67,11 @@
   height: 100%;
   background-color: #8a6d3b;
 }
+
+.color-muted-title {
+  color: #808080;
+}
+
+.color-muted-msg {
+  color: #818589;
+}

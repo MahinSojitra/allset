@@ -8,64 +8,72 @@
       Your to-do list is stored right on your device for easy access. Just remember not to clear your browser data, or
       it might disappear!
     </div>
-    <div class="row g-4 mb-4">
-      <ng-container *ngFor="let todo of todos">
-        <div class="col-md-4" *ngIf="todo.active">
-          <a class="card-link">
-            <div class="card shadow-sm hover-card">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="card-title">
-                    <label *ngIf="currentEditTodo?.id === todo.id" class="form-label fw-bold fs-6"
-                      for="todoTitle">Title</label>
-                    <input *ngIf="currentEditTodo?.id === todo.id" [(ngModel)]="currentEditTodo.title"
-                      class="form-control" title="todoTitle" placeholder="Todo's Title" />
-                    <span *ngIf="currentEditTodo?.id !== todo.id">{{ todo.title }}</span>
-                  </h5>
-                </div>
-                <p class="card-text">
-                  <label *ngIf="currentEditTodo?.id === todo.id" class="form-label fw-bold fs-6"
-                    for="todoDescription">Description</label>
-                  <textarea *ngIf="currentEditTodo?.id === todo.id" [(ngModel)]="currentEditTodo.description"
-                    class="form-control" title="todoDescription" rows="4"
-                    placeholder="Write a few words describing your todo..."></textarea>
-                  <span *ngIf="currentEditTodo?.id !== todo.id">{{ todo.description }}</span>
-                </p>
-                <div class="d-flex justify-content-between">
-                  <div class="d-flex">
-                    <button *ngIf="todo.id !== 1" class="btn btn-sm btn-light me-2"
-                      [title]="currentEditTodo?.id === todo.id ? 'Cancel' : 'Edit Todo'" (click)="toggleEdit(todo)">
-                      <i
-                        [class]="currentEditTodo?.id === todo.id ? 'bi bi-x-octagon icon-size fw-bold text-danger' : 'bi bi-pencil-fill icon-size fw-bold purple-color'">
-                      </i>
-                    </button>
-                    <button *ngIf="todo.id !== 1" class="btn btn-sm btn-light me-2" title="Delete Todo"
-                      (click)="deleteTodo(todo)">
-                      <i class="bi bi-trash-fill icon-size fw-bold text-danger"></i>
-                    </button>
-                    <button *ngIf="todo.id !== 1" class="btn btn-sm btn-light me-2" title="Mark As Complete"
-                      (click)="markAsCompleted(todo)">
-                      <i class="bi bi-check2-circle icon-size fw-bold text-success"></i>
-                    </button>
-                    <button *ngIf="todo.id === 1" class="btn btn-sm btn-light me-2" title="Got it"
-                      (click)="markAsCompleted(todo)">
-                      <i class="bi bi-check-circle-fill icon-size fw-bold text-success"></i>
-                    </button>
-                    <button *ngIf="currentEditTodo?.id === todo.id" [disabled]="!isTodoModified()"
-                      class="btn btn-sm btn-light" title="Save Todo" (click)="saveTodo()">
-                      <i class="bi bi-floppy icon-size fw-bold text-success"></i>
-                    </button>
+    <div *ngIf="hasActiveTodos; else noTodos">
+      <div class="row g-4 mb-4">
+        <ng-container *ngFor="let todo of todos">
+          <div class="col-md-4" *ngIf="todo.active">
+            <a class="card-link">
+              <div class="card shadow-sm hover-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">
+                      <label *ngIf="currentEditTodo?.id === todo.id" class="form-label fw-bold fs-6"
+                        for="todoTitle">Title</label>
+                      <input *ngIf="currentEditTodo?.id === todo.id" [(ngModel)]="currentEditTodo.title"
+                        class="form-control" title="Todo's Title" placeholder="Todo's Title" required autofocus />
+                      <span *ngIf="currentEditTodo?.id !== todo.id">{{ todo.title }}</span>
+                    </h5>
                   </div>
-                  <div *ngIf="!(currentEditTodo?.id === todo.id)" class="d-flex align-items-end justify-content-end">
-                    <p class="badge text-bg-success mb-0">{{ todo.updated_at | timeAgo }}</p>
+                  <p class="card-text">
+                    <label *ngIf="currentEditTodo?.id === todo.id" class="form-label fw-bold fs-6"
+                      for="todoDescription">Description</label>
+                    <textarea *ngIf="currentEditTodo?.id === todo.id" [(ngModel)]="currentEditTodo.description"
+                      class="form-control" title="todoDescription" rows="4"
+                      placeholder="Write a few words describing your todo..." required></textarea>
+                    <span *ngIf="currentEditTodo?.id !== todo.id">{{ todo.description }}</span>
+                  </p>
+                  <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                      <button *ngIf="todo.id !== 1" class="btn btn-sm btn-light me-2"
+                        [title]="currentEditTodo?.id === todo.id ? 'Cancel' : 'Edit Todo'" (click)="toggleEdit(todo)">
+                        <i
+                          [class]="currentEditTodo?.id === todo.id ? 'bi bi-x-octagon icon-size fw-bold text-danger' : 'bi bi-pencil-fill icon-size fw-bold purple-color'">
+                        </i>
+                      </button>
+                      <button *ngIf="todo.id !== 1 && currentEditTodo?.id !== todo.id" class="btn btn-sm btn-light me-2"
+                        title="Delete Todo" (click)="deleteTodo(todo)">
+                        <i class="bi bi-trash-fill icon-size fw-bold text-danger"></i>
+                      </button>
+                      <button *ngIf="todo.id !== 1 && currentEditTodo?.id !== todo.id" class="btn btn-sm btn-light me-2"
+                        title="Mark As Complete" (click)="markAsCompleted(todo)">
+                        <i class="bi bi-check2-circle icon-size fw-bold text-success"></i>
+                      </button>
+                      <button *ngIf="todo.id === 1" class="btn btn-sm btn-light me-2" title="Got it"
+                        (click)="markAsCompleted(todo)">
+                        <i class="bi bi-check-circle-fill icon-size fw-bold text-success"></i>
+                      </button>
+                      <button *ngIf="currentEditTodo?.id === todo.id" [disabled]="!isTodoModified()"
+                        class="btn btn-sm btn-light" title="Save Todo" (click)="saveTodo()">
+                        <i class="bi bi-floppy icon-size fw-bold text-success"></i>
+                      </button>
+                    </div>
+                    <div *ngIf="!(currentEditTodo?.id === todo.id)" class="d-flex align-items-end justify-content-end">
+                      <p class="badge text-bg-success mb-0">{{ todo.updated_at | timeAgo }}</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </div>
-      </ng-container>
+            </a>
+          </div>
+        </ng-container>
+      </div>
     </div>
+    <ng-template #noTodos>
+      <div class="d-flex flex-column justify-content-center align-items-center" style="height: 50vh;">
+        <h4 class="color-muted-title text-center mb-1">Wow, you're all caught up! 🎉</h4>
+        <p class="color-muted-msg text-center mb-0">Tap 'What’s Next?' to create new.</p>
+      </div>
+    </ng-template>
     <hr class="border border-success border-0" />
   </div>
 </div>

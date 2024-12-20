@@ -1,4 +1,4 @@
-<div class="container mt-5 mb-5">
+<!-- <div class="container mt-5 mb-5">
   <div class="row g-4">
     <div class="col-md-3"></div>
     <div class="col-md-6">
@@ -6,21 +6,30 @@
         <div class="card-body">
           <h2 class="card-title text-success text-center mb-1">Make today productive</h2>
           <h6 class="card-subtitle text-center mb-4 text-muted">What’s on Your Mind? Let’s Add it as a Todo!</h6>
-          <form (ngSubmit)="onSubmit()">
-            <div class="mb-4">
+          <form #todoForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="mb-2">
+              <label for="todoTitle" class="form-label fw-bold">Todo's Title</label>
               <input [(ngModel)]="todoTitle" name="todoTitle" type="text" class="form-control border-1 border-success"
-                id="todoTitle" placeholder="Todo's Title" required autofocus>
-              <div id="emailHelp" class="form-text">Title should be between 5 to 10 words long.</div>
+                id="todoTitle" placeholder="What to do?" required autofocus #todoTitleField="ngModel"
+                [ngClass]="{ 'is-invalid': todoTitleField.invalid && todoTitleField.touched }">
+              <div *ngIf="todoTitleField.invalid && todoTitleField.touched" class="form-text text-danger">
+                Title should be 5 to 10 words.
+              </div>
             </div>
 
-            <div class="mb-5">
+            <div class="mb-4">
+              <label for="todoDescription" class="form-label fw-bold">Todo's Description</label>
               <textarea [(ngModel)]="todoDescription" name="todoDescription"
                 class="form-control border-1 border-success" id="todoDescription" rows="3"
-                placeholder="Write a few words describing your todo..." required></textarea>
-              <div id="emailHelp" class="form-text">Description should between 20 to 100 words long.</div>
+                placeholder="Write a few words describing your todo..." required #todoDescriptionField="ngModel"
+                [ngClass]="{ 'is-invalid': todoDescriptionField.invalid && todoDescriptionField.touched }"></textarea>
+              <div *ngIf="todoDescriptionField.invalid && todoDescriptionField.touched" class="form-text text-danger">
+                Todo's description should be between 20 to 100 words.
+              </div>
             </div>
 
-            <button type="submit" class="btn btn-success w-100 fw-bold">Let’s Get Going</button>
+            <button type="submit" class="btn btn-success w-100 fw-bold"
+              [disabled]="isSubmitting || todoForm.invalid">Let’s Get Going</button>
           </form>
 
           <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center mt-3" role="alert">
@@ -34,3 +43,12 @@
       <div class="col-md-3"></div>
     </div>
   </div>
+</div> -->
+<div class="container d-flex align-items-center justify-content-center" style="height: 90vh;">
+  <div class="text-center">
+    <h1 class="display-2 text-success mb-0">We're Under Maintenance</h1>
+    <p class="lead mb-1">You can still use our other services expect this page.</p>
+    <p class="text-muted">Thank you for your patience!</p>
+    <a href="#" class="btn btn-success mt-1 fw-bold" routerLink="/">Home</a>
+  </div>
+</div>

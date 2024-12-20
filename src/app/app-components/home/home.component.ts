@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   currentIndex: number = 0;
   todos: Todo[] = [];
   deletedTodo: any = null;
+  deletedTodoIndex: number | null = null;
   currentEditTodo: any = null;
 
   constructor(private snackBar: MatSnackBar) {
@@ -38,10 +39,12 @@ export class HomeComponent implements OnInit {
             "created_at": new Date(),
             "updated_at": new Date()
           }
-        ]
+        ];
         this.saveTodosToLocalStorage();
       }
     }
+    this.ensureInitialTodoPosition();
+    console.log('Active Todos:', this.hasActiveTodos);
   }
 
   startTyping(): void {
@@ -49,6 +52,18 @@ export class HomeComponent implements OnInit {
       this.typedText += this.text.charAt(this.currentIndex);
       this.currentIndex++;
       setTimeout(() => this.startTyping(), 200);
+    }
+  }
+
+  get hasActiveTodos(): boolean {
+    return this.todos && this.todos.some(todo => todo.active == true);
+  }
+
+  private ensureInitialTodoPosition(): void {
+    const initialTodoIndex = this.todos.findIndex(todo => todo.id === 1);
+    if (initialTodoIndex > 0) {
+      const [initialTodo] = this.todos.splice(initialTodoIndex, 1);
+      this.todos.unshift(initialTodo);
     }
   }
 
@@ -65,9 +80,10 @@ export class HomeComponent implements OnInit {
     if (index !== -1) {
       this.todos[index] = {
         ...this.currentEditTodo,
-        updated_at: new Date()
+        updated_at: new Date(),
       };
       this.currentEditTodo = null;
+      this.ensureInitialTodoPosition();
       this.saveTodosToLocalStorage();
     }
   }
@@ -96,9 +112,10 @@ export class HomeComponent implements OnInit {
 
   deleteTodo(todo: any): void {
     this.deletedTodo = { ...todo };
-    const index = this.todos.indexOf(todo);
-    if (index > -1) {
-      this.todos.splice(index, 1);
+    this.deletedTodoIndex = this.todos.indexOf(todo);
+
+    if (this.deletedTodoIndex > -1) {
+      this.todos.splice(this.deletedTodoIndex, 1);
 
       const snackBarRef = this.snackBar.open("'" + todo.title + "' todo has been deleted.", 'Undo', {
         duration: 5000,
@@ -109,22 +126,26 @@ export class HomeComponent implements OnInit {
       });
     }
 
+    this.ensureInitialTodoPosition();
     this.saveTodosToLocalStorage();
   }
 
   undoDelete(): void {
-    if (this.deletedTodo) {
-      this.todos.unshift(this.deletedTodo);
+    if (this.deletedTodo && this.deletedTodoIndex !== null) {
+      this.todos.splice(this.deletedTodoIndex, 0, this.deletedTodo);
 
       this.deletedTodo = null;
+      this.deletedTodoIndex = null;
 
       this.snackBar.open('Action undone.', 'OK', {
         duration: 2000,
       });
     }
 
+    this.ensureInitialTodoPosition();
     this.saveTodosToLocalStorage();
   }
+
 
   saveTodosToLocalStorage(): void {
     if (typeof window !== 'undefined') {
