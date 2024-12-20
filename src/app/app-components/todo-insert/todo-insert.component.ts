@@ -13,7 +13,7 @@ export class TodoInsertComponent {
   todoTitle: string = '';
   todoDescription: string = '';
   successMessage: string = '';
-  countdown: number = 5;
+  countdown: number = 4;
   redirectTimer: any;
 
 
@@ -34,11 +34,11 @@ export class TodoInsertComponent {
       todos.push(newTodo);
       localStorage.setItem('todos', JSON.stringify(todos));
 
-      this.successMessage = `Todo is created! Redirecting to Home in ${this.countdown} seconds...`;
+      this.successMessage = `Todo is Created!`;
 
       this.redirectTimer = setInterval(() => {
         this.countdown--;
-        this.successMessage = `Todo is created! Redirecting to Home in ${this.countdown} seconds...`;
+        this.successMessage = `Tight your seatbelt, redirecting in ${this.countdown} seconds...`;
 
         if (this.countdown === 0) {
           clearInterval(this.redirectTimer);
