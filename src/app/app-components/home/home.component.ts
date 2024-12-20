@@ -32,8 +32,8 @@ export class HomeComponent implements OnInit {
         this.todos = [
           {
             "id": 1,
-            "title": "Explore the 'AllSet'",
-            "description": "Dive into your new productivity companion! Add your first task, complete it, and feel the joy of progress. Let’s make things happen!",
+            "title": "Welcome to AllSet!",
+            "description": "Ready to boost your productivity? Start by adding your first task, check it off, and enjoy the feeling of getting things done. Let’s make it happen!",
             "active": true,
             "created_at": new Date(),
             "updated_at": new Date()
