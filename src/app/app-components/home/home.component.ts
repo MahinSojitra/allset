@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit {
       }
     }
     this.ensureInitialTodoPosition();
-    console.log('Active Todos:', this.hasActiveTodos);
   }
 
   startTyping(): void {
